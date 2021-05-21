@@ -13,6 +13,9 @@ namespace WeddingApi.Models.Couple
         public string Gender{ get; set; }
         public string SocialSecurityNumber { get; set; }
         public string Address { get; set; }
+        public WeddingCouple WeddingCouples { get; set; }
+        
+
 
 
     }

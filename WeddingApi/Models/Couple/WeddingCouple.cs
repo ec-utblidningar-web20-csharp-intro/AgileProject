@@ -8,11 +8,7 @@ namespace WeddingApi.Models.Couple
     public class WeddingCouple
     {
         public int Id { get; set; }
-        [InverseProperty("PersonOne")]
-        public Person PersonOne { get; set; }
-        [InverseProperty("PersonTwo")]
-        public Person PersonTwo { get; set; }
-
+        public ICollection<Person> Persons { get; set; }   
         public Models.Wedding.Wedding Wedding { get; set; }
 
     }
