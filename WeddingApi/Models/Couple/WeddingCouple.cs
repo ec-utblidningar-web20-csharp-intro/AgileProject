@@ -9,7 +9,7 @@ namespace WeddingApi.Models.Couple
     {
         public int Id { get; set; }
         public ICollection<Person> Persons { get; set; }   
-        public Models.Wedding.Wedding Wedding { get; set; }
+        public Wedding.Wedding Wedding { get; set; }
 
     }
 }
