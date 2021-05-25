@@ -14,7 +14,7 @@ namespace WeddingApi.Models.Guests
         public string Email { get; set; }
         public MarrierSide Side { get; set; }
         public ExtraPpl AmountPpl { get; set; }
-        public listtype Answer { get; set; }
+        public Listtype Answer { get; set; }
         public Allergies Allergies { get; set; }
         public bool Transport { get; set; }
         public bool Hotel { get; set; }
@@ -42,7 +42,7 @@ namespace WeddingApi.Models.Guests
         Shellfish,
         Fruits
     }
-    public enum listtype
+    public enum Listtype
     {
         AcceptedList,
         PossibleList,

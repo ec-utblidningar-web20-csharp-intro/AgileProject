@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Models.Couple;
+using WeddingApi.Models.Guests;
+using WeddingApi.Models.Wedding;
 
 namespace WeddingApi.Data
 {
@@ -14,5 +16,7 @@ namespace WeddingApi.Data
         public WeddingDbContext(DbContextOptions<WeddingDbContext> options) : base (options)
         { }
         public DbSet<WeddingCouple> Couple { get; set; }
+        public DbSet<Guests> Guests { get; set; }
+        public DbSet<Wedding> Wedding { get; set; }
     }
 }
