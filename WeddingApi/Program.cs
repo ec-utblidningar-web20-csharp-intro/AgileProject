@@ -18,6 +18,8 @@ namespace WeddingApi
             var host = CreateHostBuilder(args).Build();
             TestSeedDb(host).Wait();
             host.Run();
+
+            //testpush
         }
 
         public static async Task TestSeedDb(IHost host)
