@@ -16,7 +16,10 @@ namespace WeddingApi.Data
         public WeddingDbContext(DbContextOptions<WeddingDbContext> options) : base (options)
         { }
         public DbSet<WeddingCouple> Couple { get; set; }
+        public DbSet<Person> Person { get; set; }
         public DbSet<Guests> Guests { get; set; }
         public DbSet<Wedding> Wedding { get; set; }
+
+       
     }
 }
