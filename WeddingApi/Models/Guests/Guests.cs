@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WeddingApi.Models.Guests
 {
+//Issue10
     public class Guests 
     {
         public int Id { get; set; }
