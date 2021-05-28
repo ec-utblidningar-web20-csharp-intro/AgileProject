@@ -22,10 +22,10 @@
                             <!--.login-form-wd-->
                             <form asp-action="Login" class="login-form-wd">
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Email" type="email">                                  
+                                    <input class="form-control" placeholder="Email" type="email">
                                 </div>
                                 <div class="form-group">
-                                    <input  class="form-control" placeholder="Password" type="text">
+                                    <input class="form-control" placeholder="Password" type="text">
                                 </div>
                                 <div class="form-group">
                                     <button name="submit" class="btn btn-block btn-lg reg-login-btn" type="submit">Login</button>
@@ -35,6 +35,7 @@
                             <div class="help-text text-center">
                                 <div class="text-center">Don't have an account? <a asp-controller="Account" asp-action="Register">Sign up here</a></div>
                             </div>
+                            <a asp-controller="Dashboard" asp-action="Index">Test login </a>
                         </div>
                         <div id="login-guest-tab-content">
                             <!--.login-form-guest-->

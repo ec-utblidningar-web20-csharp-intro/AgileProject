@@ -16,3 +16,10 @@ jQuery(document).ready(function ($) {
 		$(tab_content).addClass('active');
 	});
 });
+
+
+$(document).ready(function () {
+	$('#sidebarCollapse').on('click', function () {
+		$('#sidebar').toggleClass('active');
+	});
+});
