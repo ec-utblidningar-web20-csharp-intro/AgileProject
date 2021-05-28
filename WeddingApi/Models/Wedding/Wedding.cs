@@ -11,5 +11,13 @@ namespace WeddingApi.Models.Wedding
         public int Id { get; set; }
         public int WeddingCoupleId { get; set; }
         public WeddingCouple Couple { get; set; }
+
+        public DateTime DateOfWedding { get; set; }
+        public string Address { get; set; }
+
+
+        //savethedate-kort? behövs kanske inte.
+        public Guests.Guests GuestList { get; set; }
+        public DateTime GuestsDeadlineForAnswer { get; set; }
     }
 }
