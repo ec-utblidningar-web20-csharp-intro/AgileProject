@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
+using WeddingApi.Models;
 using WeddingApi.Models.Couple;
-using WeddingApi.ViewModels;
 
 namespace WeddingApi.Controllers
 {
@@ -39,10 +39,10 @@ namespace WeddingApi.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Register([Bind("FirstName, LastName," +
-            "Email, Password, PhoneNumber")] RegisterPersonViewModel input)
+            "Email, Password, PhoneNumber")] RegisterModel registerInput)
         {
-            var person = new Person { UserName = input.Email, Email = input.Email };
-            var tryCreateNewPerson = await _userManager.CreateAsync(person, input.Password);
+            var person = new Person { UserName = registerInput.Email, Email = registerInput.Email };
+            var tryCreateNewPerson = await _userManager.CreateAsync(person, registerInput.Password);
             if (tryCreateNewPerson.Succeeded)
             {
                 await _signInManager.SignInAsync(person, false);
@@ -54,6 +54,24 @@ namespace WeddingApi.Controllers
 
         public IActionResult Login()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginInput)
+        {
+            if (ModelState.IsValid)
+            {
+                var tryToLogin = await _signInManager.PasswordSignInAsync(loginInput.Email, loginInput.Password, false, false);
+
+                if (tryToLogin.Succeeded)
+                {
+                    //replace with dashboard
+                    return View();
+                }             
+            }
+
+            ModelState.AddModelError(string.Empty, "Something wrong with login details.");
             return View();
         }
 
