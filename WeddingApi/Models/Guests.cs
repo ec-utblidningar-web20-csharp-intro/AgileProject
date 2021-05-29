@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WeddingApi.Models.Guests
+namespace WeddingApi.Models
 {
 
     public class Guests 
@@ -16,45 +16,28 @@ namespace WeddingApi.Models.Guests
         public string Country { get; set; }
         public string City { get; set; }
         public string LoginCode { get; set; }
+        public string Allergies { get; set; }
+        public int AmountKids { get; set; }
 
         public MarrierSide Side { get; set; }
         public FriendsOrFamily FriendsOrFamily { get; set; }
-        public Kids AmountKids { get; set; }
-        public Listtype Answer { get; set; }
-        public Allergies Allergies { get; set; }
-        public bool PlusOne { get; set; }
-        public bool Transport { get; set; }
-        public bool Lodging { get; set; }
+        public Status Answer { get; set; }
 
-        public Wedding.Wedding JoinedWedding { get; set; }
+        
+
+        public bool HasPlusOne { get; set; }
+        public bool NeedTransportation { get; set; }
+        public bool NeedLodging { get; set; }
+
+        public Wedding JoinedWedding { get; set; }
     }
-    public enum Kids
-    {
-        None,
-        One,
-        Two,
-        Three,
-        Four,
-        Five,
-        SixOrMore
-    }
+
     public enum FriendsOrFamily
     {
         Friends,
         Family
     }
-    public enum Allergies
-    {
-        Veggie,
-        Vegan,
-        Lacto,
-        Gluten,
-        Egg,
-        Nuts,
-        Shellfish,
-        Fruits
-    }
-    public enum Listtype
+    public enum Status
     {
         AcceptedList,
         PossibleList,

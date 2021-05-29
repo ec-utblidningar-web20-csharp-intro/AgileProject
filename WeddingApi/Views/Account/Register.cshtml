@@ -1,4 +1,4 @@
-﻿@model WeddingApi.Models.Couple.Person
+﻿@model WeddingApi.Models.Person
 
 @{
     ViewData["Title"] = "Register";
@@ -22,10 +22,6 @@
                     <div class="form-group">
                         <input asp-for="LastName" class="form-control" placeholder="LastName" type="text" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input asp-for="PersonNumber" class="form-control" placeholder="PersonNumber" type="text" />
-                        <span asp-validation-for="PersonNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <input asp-for="Email" class="form-control" placeholder="Email" type="text" />

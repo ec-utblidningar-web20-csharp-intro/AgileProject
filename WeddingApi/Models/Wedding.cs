@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WeddingApi.Models.Couple;
 
-namespace WeddingApi.Models.Wedding
+
+namespace WeddingApi.Models
 {
     public class Wedding
     {
@@ -13,11 +13,8 @@ namespace WeddingApi.Models.Wedding
         public WeddingCouple Couple { get; set; }
 
         public DateTime DateOfWedding { get; set; }
-        public string Address { get; set; }
-
-
         //savethedate-kort? behövs kanske inte.
-        public Guests.Guests GuestList { get; set; }
+        public ICollection<Guests> GuestList { get; set; }
         public DateTime GuestsDeadlineForAnswer { get; set; }
     }
 }
