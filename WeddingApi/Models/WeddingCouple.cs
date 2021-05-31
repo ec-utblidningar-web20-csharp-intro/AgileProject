@@ -8,7 +8,8 @@ namespace WeddingApi.Models
     public class WeddingCouple
     {
         public int Id { get; set; }
-        public ICollection<Person> Persons { get; set; }   
+        public ICollection<Person> Persons { get; set; }
+        //public int WeddingId { get; set; }
         public Wedding Wedding { get; set; }
 
     }

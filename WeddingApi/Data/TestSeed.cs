@@ -45,14 +45,8 @@ namespace WeddingApi.Data
 
             var FilePathWedding = @".\MOCK_DATA.json";
             var Weddings = JsonConvert.DeserializeObject<List<Wedding>>(File.ReadAllText(FilePathWedding));
-
-
-            foreach (var wedding in Weddings)
-            {
-
-                await _context.AddAsync(wedding);
-                await _context.SaveChangesAsync();
-            }
+            
+           
 
             for (int i = 0; i < 500; i++)
             {
@@ -62,44 +56,57 @@ namespace WeddingApi.Data
                     {
                         Personas[i],
                         Personas[i + 500]
-                        
-                    }
-                   
-                    
+                    }           
                 };
-                weddingCouple.Wedding = Weddings[i];
+              
                 await _context.AddAsync(weddingCouple);
                 await _context.SaveChangesAsync();
             };
-            
 
-            //1000 bröllop
-            
-            
-            // 1000 Guests
-           
+
+            for (int i = 0; i < Weddings.Count / 2; i++)
+            {
+                var test = _context.Couple.Find(i + 1);
+                Weddings[i].CoupleId = test.Id;
+                Weddings[i].Couple = test;
+
+
+
+                await _context.Wedding.AddAsync(Weddings[i]);
+            }
+
+
+
+
+            await _context.SaveChangesAsync();
+
+
 
             var FilePathMockNames = @".\MOCK_DATA_14.json";
              var MockNames = JsonConvert.DeserializeObject<List<Guests>>(File.ReadAllText(FilePathMockNames));
-            
-            foreach (var guest in MockNames)
+            var weddings = _context.Wedding.AsNoTracking().ToList();
+            for (int c = 0; c < weddings.Count; c++)
             {
-                guest.FriendsOrFamily = (FriendsOrFamily)jadu.Next(0, 2);
-                guest.Answer = (Status)jadu.Next(0, 4);
-                guest.Side = (MarrierSide)jadu.Next(0, 3);
-
-                var weddings = await _context.Wedding.AsNoTracking().ToListAsync();
-                foreach (var wed in weddings)
+                var bröllop = weddings[c];
+            for (int i = 0; i < MockNames.Count; i++)
+            {
+                MockNames[i].FriendsOrFamily = (FriendsOrFamily)jadu.Next(0, 2);
+                MockNames[i].Answer = (Status)jadu.Next(0, 4);
+                MockNames[i].Side = (MarrierSide)jadu.Next(0, 3);
+                var folktillbröllop = jadu.Next(50, 100);
+               
+                for (int j = 0; j < folktillbröllop; j++)
                 {
-                    var folktillbröllop = jadu.Next(50, 100);
-                    var bröllop = wed;
-                    for(int j = 0; j < folktillbröllop; j++)
-                        guest.JoinedWedding = bröllop;
+                    MockNames[j].JoinedWedding = bröllop;
                 }
-                await _context.AddAsync(guest);
+                
+                await _context.AddAsync(MockNames[i]);
             }
-            
+
+            }
             await _context.SaveChangesAsync();
+
+            
 
         }
     }
