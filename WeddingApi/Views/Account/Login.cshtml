@@ -1,4 +1,5 @@
-﻿
+﻿@model WeddingApi.Models.LoginModel
+
 @{
     ViewData["Title"] = "Login";
 }
@@ -22,10 +23,10 @@
                             <!--.login-form-wd-->
                             <form asp-action="Login" class="login-form-wd">
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Email" type="email">                                  
+                                    <input class="form-control" placeholder="Email" type="email" asp-for="Email">                                  
                                 </div>
                                 <div class="form-group">
-                                    <input  class="form-control" placeholder="Password" type="text">
+                                    <input  class="form-control" placeholder="Password" type="text" asp-for="Password">
                                 </div>
                                 <div class="form-group">
                                     <button name="submit" class="btn btn-block btn-lg reg-login-btn" type="submit">Login</button>
