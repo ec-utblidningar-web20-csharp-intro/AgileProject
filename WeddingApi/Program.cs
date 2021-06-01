@@ -25,7 +25,7 @@ namespace WeddingApi
             using (IServiceScope scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                await TestSeed.Seeder(services);
+                await Seeding.Initialize(services);
             }
         }
 
