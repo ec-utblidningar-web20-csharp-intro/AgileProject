@@ -8,8 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
 using WeddingApi.Models;
-using WeddingApi.Models.Couple;
-
+using WeddingApi.Repositories;
 
 namespace WeddingApi.Controllers
 {
@@ -17,11 +16,15 @@ namespace WeddingApi.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IGuestRepository _guestRepo;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IGuestRepository guestRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _guestRepo = guestRepo;
         }
 
         public class RegisterInput
@@ -30,7 +33,7 @@ namespace WeddingApi.Controllers
             public string Password { get; set; }
         }
 
-        
+
 
 
         public IActionResult Register()
@@ -38,45 +41,45 @@ namespace WeddingApi.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register([Bind("FirstName, LastName," +
-            "Email, Password, PhoneNumber")] RegisterModel registerInput)
-        {
-            var person = new Person { UserName = registerInput.Email, Email = registerInput.Email };
-            var tryCreateNewPerson = await _userManager.CreateAsync(person, registerInput.Password);
-            if (tryCreateNewPerson.Succeeded)
-            {
-                await _signInManager.SignInAsync(person, false);
-                //någon annan view här. 
-                return View("Register");
-            }
-            return View("Register");
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Register([Bind("FirstName, LastName," +
+        //    "Email, Password, PhoneNumber")] RegisterModel registerInput)
+        //{
+        //    var person = new Person { UserName = registerInput.Email, Email = registerInput.Email };
+        //    var tryCreateNewPerson = await _userManager.CreateAsync(person, registerInput.Password);
+        //    if (tryCreateNewPerson.Succeeded)
+        //    {
+        //        await _signInManager.SignInAsync(person, false);
+        //        //någon annan view här. 
+        //        return View("Register");
+        //    }
+        //    return View("Register");
+        //}
 
         public IActionResult Login()
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginInput)
-        {
-            if (ModelState.IsValid)
-            {
-                var tryToLogin = await _signInManager.PasswordSignInAsync(loginInput.Email, loginInput.Password, false, false);
+        //[HttpPost]
+        //public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginInput)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var tryToLogin = await _signInManager.PasswordSignInAsync(loginInput.Email, loginInput.Password, false, false);
 
-                if (tryToLogin.Succeeded)
-                {
-                    //replace with dashboard
-                    return View();
-                }             
-            }
+        //        if (tryToLogin.Succeeded)
+        //        {
+        //            //replace with dashboard
+        //            return View();
+        //        }
+        //    }
 
-            ModelState.AddModelError(string.Empty, "Something wrong with login details.");
-            return View();
-        }
+        //    ModelState.AddModelError(string.Empty, "Something wrong with login details.");
+        //    return View();
+        //}
 
-        
+
     }
 
 }
