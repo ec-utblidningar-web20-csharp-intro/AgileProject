@@ -10,8 +10,8 @@ using WeddingApi.Data;
 namespace WeddingApi.Migrations
 {
     [DbContext(typeof(WeddingDbContext))]
-    [Migration("20210525150110_init")]
-    partial class init
+    [Migration("20210530123921_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -237,6 +237,24 @@ namespace WeddingApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Couple");
+                });
+
+            modelBuilder.Entity("WeddingApi.Models.GuestTable.GuestTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TableName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URLImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GuestTables");
                 });
 
             modelBuilder.Entity("WeddingApi.Models.Guests.Guests", b =>

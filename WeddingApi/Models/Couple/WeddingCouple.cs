@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using WeddingApi.Models.GuestTableImg;
+
 namespace WeddingApi.Models.Couple
 {
     public class WeddingCouple
@@ -10,6 +12,6 @@ namespace WeddingApi.Models.Couple
         public int Id { get; set; }
         public ICollection<Person> Persons { get; set; }   
         public Wedding.Wedding Wedding { get; set; }
-
+        public ICollection<WeddingCouple> WeddingCouples { get; set; }
     }
 }

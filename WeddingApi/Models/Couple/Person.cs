@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WeddingApi.Models.GuestTableImg;
 
 namespace WeddingApi.Models.Couple
 {
@@ -15,7 +16,7 @@ namespace WeddingApi.Models.Couple
         public string SocialSecurityNumber { get; set; }
         public string Address { get; set; }
         public WeddingCouple WeddingCouples { get; set; }
-        
+        public ICollection<GuestTable> GuestTables { get; set; }
 
     }
 }

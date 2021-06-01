@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Models.Couple;
 using WeddingApi.Models.Guests;
+using WeddingApi.Models.GuestTableImg;
 using WeddingApi.Models.Wedding;
 
 namespace WeddingApi.Data
@@ -18,5 +19,6 @@ namespace WeddingApi.Data
         public DbSet<WeddingCouple> Couple { get; set; }
         public DbSet<Guests> Guests { get; set; }
         public DbSet<Wedding> Wedding { get; set; }
+        public DbSet<GuestTable> GuestTables { get; set; }
     }
 }

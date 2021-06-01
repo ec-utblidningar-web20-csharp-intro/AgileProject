@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Models.Couple;
+using WeddingApi.Models.GuestTableImg;
 using WeddingApi.Models.Wedding;
 
 namespace WeddingApi.Data
@@ -13,16 +14,19 @@ namespace WeddingApi.Data
     {
         private static WeddingDbContext _context { get; set; }
         private static UserManager<IdentityUser> _userManager { get; set; }
+        
 
         public async static Task Seeder(IServiceProvider services)
         {
             _context = services.GetRequiredService<WeddingDbContext>();
             _userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            
 
             await _context.Database.EnsureDeletedAsync();
             await _context.Database.EnsureCreatedAsync();
 
             await TestSeedWedding();
+            
         }
         static async Task TestSeedWedding()
         {
@@ -64,10 +68,30 @@ namespace WeddingApi.Data
                  
             };
 
+            var guestTables = new GuestTable[]
+           {
+                new GuestTable{TableName = "Table-A", URLImage ="~/img/Guest_Table/01.jpg"},
+                new GuestTable{TableName = "Table-B", URLImage ="~/img/Guest_Table/02.jpg"},
+                new GuestTable{TableName = "Table-A", URLImage ="~/img/Guest_Table/03.jpg"},
+                new GuestTable{TableName = "Table-B", URLImage ="~/img/Guest_Table/04.jpg"},
+                new GuestTable{TableName = "Table-A", URLImage ="~/img/Guest_Table/05.jpg"},
+                new GuestTable{TableName = "Table-B", URLImage ="~/img/Guest_Table/06.jpg"},
+                new GuestTable{TableName = "Table-A", URLImage ="~/img/Guest_Table/07.jpg"},
+                new GuestTable{TableName = "Table-B", URLImage ="~/img/Guest_Table/08.jpg"},
+               
+           };
+
+            foreach (GuestTable t in guestTables)
+            {
+                await _context.AddAsync(t);
+            }
+
             await _context.AddAsync(weddingCouple);
             await _context.AddAsync(wedding);
             await _context.SaveChangesAsync();
 
         }
+
+       
     }
 }

@@ -237,6 +237,24 @@ namespace WeddingApi.Migrations
                     b.ToTable("Couple");
                 });
 
+            modelBuilder.Entity("WeddingApi.Models.GuestTable.GuestTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TableName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URLImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GuestTables");
+                });
+
             modelBuilder.Entity("WeddingApi.Models.Guests.Guests", b =>
                 {
                     b.Property<int>("Id")
