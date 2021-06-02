@@ -92,9 +92,8 @@ namespace WeddingApi.Repositories
 
         public async Task Update(Guest guest)
         {
-            var entity = await _context.Guests.FindAsync(guest.Id);
-
-            throw new NotImplementedException();
+            _context.Update(guest);
+            await _context.SaveChangesAsync();
         }
     }
 
