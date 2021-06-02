@@ -1,4 +1,4 @@
-﻿using static WeddingApi.Models.Enums.Guest;
+﻿using static WeddingApi.Models.Enums.GuestOptions;
 
 namespace WeddingApi.Models
 {

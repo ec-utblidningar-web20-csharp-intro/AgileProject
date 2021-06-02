@@ -1,6 +1,6 @@
 ﻿namespace WeddingApi.Models.Enums
 {
-    public class Guest
+    public static class GuestOptions
     {
         public enum FriendsOrFamily
         {

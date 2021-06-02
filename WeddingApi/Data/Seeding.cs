@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Models;
-using static WeddingApi.Models.Enums.Guest;
+using static WeddingApi.Models.Enums.GuestOptions;
 
 namespace WeddingApi.Data
 {
