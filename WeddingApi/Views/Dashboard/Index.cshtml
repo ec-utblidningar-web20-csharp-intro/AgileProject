@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Company name</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a asp-controller="Dashboard" asp-action="Index">
+                    <span class="iconify" data-inline="false" data-icon="codicon:home"></span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Dashboard" asp-action="Bookings">
+                    <span class="iconify" data-inline="false" data-icon="tabler:brand-booking"></span>
+                    <span>Bookings</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Dashboard" asp-action="PrepareMenu">
+                    <span class="iconify" data-inline="false" data-icon="icomoon-free:spoon-knife"></span>
+                    <span>Prepare Menu</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Dashboard" asp-action="DrinkOrder">
+                    <span class="iconify" data-inline="false" data-icon="fluent:drink-wine-16-regular"></span>
+                    <span>Drink Order</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Dashboard" asp-action="BarOptions">
+                    <span class="iconify" data-inline="false" data-icon="carbon:bar"></span>
+                    <span>Bar Options</span>
+                </a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <span class="iconify" data-inline="false" data-icon="fluent:guest-24-filled"></span>
+                    <span>Guest</span>
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a asp-controller="Dashboard" asp-action="GuestList">Guest List</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Dashboard" asp-action="GuestTable">Guest Table</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-menu">
+                    <i class="fas fa-bars"></i>
+                    <span>MENU</span>
+                </button>
+                <div class="user-name"><h5>Hi!names</h5></div>
+                <div class="log-out"><a href=""><h6>Log ut</h6></a></div>
+
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="remaining-time">
+                <div class="d-flex justify-content-center clock">
+                    <div class="rem-day text-center">
+                        <div class="dy"><h6 id="rem-days">...</h6></div>
+                        <p>Day</p>
+                    </div>
+                    <div class="rem-hours text-center">
+                        <h6 id="rem-hours">...</h6>
+                        <p>Hour</p>
+                    </div>
+                    <div class="rem-minutes text-center">
+                        <h6 id="rem-minutes">...</h6>
+                        <p>Min</p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <span class="iconify" data-inline="false" data-icon="emojione-v1:glowing-star" style="font-size: 27px"></span>
+                    <h6 class="text-big-day">To your big day!</h6>
+                    <div id="show"></div>
+                </div>
+            </div>
+            <div class="row status">
+                <div class="col-12">
+                    <div class="d-flex float-right">
+                        <span class="iconify" data-inline="false" data-icon="akar-icons:circle-fill" style="color: #ff4545; font-size: 21px"></span>
+                        <h6>Overdue</h6>
+                    </div>
+                    <div class="d-flex float-right">
+                        <span class="iconify" data-inline="false" data-icon="akar-icons:circle-fill" style="color: #edd65c; font-size: 21px"></span>
+                        <h6>Missing</h6>
+                    </div>
+                    <div class="d-flex float-right">
+                        <span class="iconify" data-inline="false" data-icon="akar-icons:circle-fill" style="color: #56eb65; font-size: 21px"></span>
+                        <h6>Completed</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="card-menu">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="bg-iconify">
+                                    <span class="iconify logo-menu" data-inline="false" data-icon="icomoon-free:spoon-knife"></span>
+                                </div>
+                                <div>
+                                    <span class="iconify status-menu" data-inline="false" data-icon="carbon:warning" style="color: #EDD65C;"></span>
+                                </div>
+                                <h5 class="card-title">Prepare Your Menu</h5>
+                                <p class="card-text">The sooner you make your menu choices the sooner you can prepare your Guest List.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="bg-iconify">
+                                    <span class="iconify logo-menu" data-inline="false" data-icon="fluent:drink-wine-16-regular"></span>
+                                </div>
+                                <div>
+                                    <span class="iconify status-menu" data-inline="false" data-icon="icons8:checked" style="color: #56EB65;"></span>
+                                </div>
+                                <h5 class="card-title">Drink Order</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="bg-iconify">
+                                    <span class="iconify logo-menu" data-inline="false" data-icon="carbon:bar"></span>
+                                </div>
+                                <div>
+                                <span class="iconify status-menu" data-inline="false" data-icon="gridicons:time" style="color: #FF4545;"></span>
+                                </div>
+                                <h5 class="card-title">Bar Options</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
+                                <a href="#" class="btn  btn-info">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
+                                <a href="#" class="btn  btn-info">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
+                                <a href="#" class="btn  btn-info">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
