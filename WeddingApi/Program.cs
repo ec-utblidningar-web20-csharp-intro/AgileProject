@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
+using WeddingApi.Models;
 
 namespace WeddingApi
 {
@@ -25,7 +26,7 @@ namespace WeddingApi
             using (IServiceScope scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                await TestSeed.Seeder(services);
+                await Seeding.Initialize(services);
             }
         }
 
