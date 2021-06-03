@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
+using WeddingApi.Models;
 
 namespace WeddingApi
 {
@@ -30,7 +31,30 @@ namespace WeddingApi
             using (IServiceScope scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                await Seeding.Initialize(services);
+                //await Seeding.Initialize(services);
+
+
+
+                var context = services.GetRequiredService<WeddingDbContext>();
+                await context.Database.EnsureCreatedAsync();
+                var couple = new WeddingCouple();
+                await context.AddAsync(couple);
+                var wedding = new Wedding { Couple = couple };
+                await context.AddAsync(wedding);
+                await context.SaveChangesAsync();
+                for (int i = 0; i < 2000; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        await context.AddAsync(new Guest() { HasPlusOne = false, JoinedWedding = wedding });
+                        continue;
+                    }
+                    await context.AddAsync(new Guest() { HasPlusOne = true, JoinedWedding = wedding });
+                }
+                await context.AddAsync(new Guest() { HasPlusOne = false, JoinedWedding = wedding });
+                await context.AddAsync(new Guest() { HasPlusOne = false, JoinedWedding = wedding });
+                await context.AddAsync(new Guest() { HasPlusOne = false, JoinedWedding = wedding });
+                await context.SaveChangesAsync();
             }
         }
 

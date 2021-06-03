@@ -1,4 +1,4 @@
-﻿using static WeddingApi.Models.Enums.Guest;
+﻿using static WeddingApi.Models.Enums.GuestOptions;
 
 namespace WeddingApi.Models
 {
@@ -23,7 +23,6 @@ namespace WeddingApi.Models
         public bool NeedLodging { get; set; }
 
         public Wedding JoinedWedding { get; set; }
-        public int GuestUserId { get; set; }
         public GuestUser GuestUser { get; set; }
 
     }

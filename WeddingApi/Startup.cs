@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
+using WeddingApi.Repositories;
 
 namespace WeddingApi
 {
@@ -27,6 +28,8 @@ namespace WeddingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddScoped<IGuestRepository, GuestRepository>();
 
             services.AddDbContext<WeddingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WeddingDb")));
 

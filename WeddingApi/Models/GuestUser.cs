@@ -6,6 +6,7 @@ namespace WeddingApi.Models
     {
         public string SocialSecurityNumber { get; set; }
         public string LoginCode { get; set; }
+        public int GuestId { get; set; }
         public Guest Guest { get; set; }
     }
 }
