@@ -12,15 +12,17 @@ namespace WeddingApi.Models
 
         // Joint account props
         public bool IsJointAccount { get; set; }
-        public MerrierJointUser MerrierJointUser { get; set; }
+        public string SecondUserFirstName { get; set; }
+        public string SecondUserLastName { get; set; }
+        public string SecondUserEmail { get; set; }
+        public string SecondUserPhoneNumber { get; set; }
 
+
+        // Global props
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public WeddingCouple WeddingCouple { get; set; }
 
-
     }
 
-    public class MerrierJointUser
-    {
-        public int Id { get; set; }
-    }
 }
