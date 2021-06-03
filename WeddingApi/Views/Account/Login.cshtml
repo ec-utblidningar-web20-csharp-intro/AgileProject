@@ -1,0 +1,58 @@
+﻿@model WeddingApi.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<svg viewBox="0 0 1440 230">
+    <path fill="#F830E4" fill-opacity="1" d="M0,96L20,106.7C40,117,80,139,120,154.7C160,171,200,181,240,160C280,139,320,85,360,69.3C400,53,440,75,480,117.3C520,160,560,224,600,218.7C640,213,680,139,720,96C760,53,800,43,840,53.3C880,64,920,96,960,90.7C1000,85,1040,43,1080,42.7C1120,43,1160,85,1200,117.3C1240,149,1280,171,1320,181.3C1360,192,1400,192,1420,192L1440,192L1440,0L1420,0C1400,0,1360,0,1320,0C1280,0,1240,0,1200,0C1160,0,1120,0,1080,0C1040,0,1000,0,960,0C920,0,880,0,840,0C800,0,760,0,720,0C680,0,640,0,600,0C560,0,520,0,480,0C440,0,400,0,360,0C320,0,280,0,240,0C200,0,160,0,120,0C80,0,40,0,20,0L0,0Z"></path>
+</svg>
+<div class="container">
+    <div class="regcard">
+        <div class="regcover">
+            <div class="regfrom">
+                <div class="form-wrap">
+                    <!--.tabs-->
+                    <div class="tabs">
+                        <h5 class="login-wc-tab"><a class="active" href="#login-wc-tab-content">Wedding Couple</a></h5>
+                        <h5 class="login-guset-tab"><a href="#login-guest-tab-content">Guest</a></h5>
+                    </div>
+                    <!--.tabs-->
+                    <h2 class="text-center">Login</h2>
+                    <div class="tabs-content">
+                        <div id="login-wc-tab-content" class="active">
+                            <!--.login-form-wd-->
+                            <form asp-action="Login" class="login-form-wd">
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Email" type="email" asp-for="Email">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" type="text" asp-for="Password">
+                                </div>
+                                <div class="form-group">
+                                    <button name="submit" class="btn btn-block btn-lg reg-login-btn" type="submit">Login</button>
+                                </div>
+                                <a asp-controller="Home" asp-action="Index">Back</a>
+                            </form><!--.login-form-wd-->
+                            <div class="help-text text-center">
+                                <div class="text-center">Don't have an account? <a asp-controller="Account" asp-action="Register">Sign up here</a></div>
+                            </div>
+                            <a asp-controller="Dashboard" asp-action="Index">Test login </a>
+                        </div>
+                        <div id="login-guest-tab-content">
+                            <!--.login-form-guest-->
+                            <form asp-action="Login" class="login-form-guest">
+                                <div class="form-group">
+                                    <input class="form-control" id="guest-code" autocomplete="off" placeholder="Code" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <button name="submit" type="submit" class="btn btn-block btn-lg reg-login-btn ">Login</button>
+                                </div>
+                            </form>
+                            <!--.login-form-guest-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
