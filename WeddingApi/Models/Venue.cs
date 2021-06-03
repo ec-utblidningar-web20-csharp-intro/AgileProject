@@ -14,7 +14,7 @@ namespace WeddingApi.Models
         public bool IsAccessible { get; set; }
         // prop for tables 
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<Wedding.Wedding> Weddings { get; set; }
+        public ICollection<Wedding> Weddings { get; set; }
 
     }
 }
