@@ -14,6 +14,11 @@ namespace WeddingApi.Data
 {
     public class Seeding
     {
+        private const string MARRIER_USERS_FILE_PATH_MOCK_DATA = @".\Data\MockData\MarrierUser.json";
+        private const string GUESTS_FILE_PATH_MOCK_DATA = @".\Data\MockData\Guest.json";
+        private const string GUEST_USERS_FILE_PATH_MOCK_DATA = @".\Data\MockData\GuestUser.json";
+        private const string WEDDINGS_FILE_PATH_MOCK_DATA = @".\Data\MockData\Wedding.json";
+
         private static WeddingDbContext _context { get; set; }
         private static UserManager<IdentityUser> _userManager { get; set; }
 
@@ -32,47 +37,40 @@ namespace WeddingApi.Data
             await EstablishRelations();
         }
 
-
-
-
         public List<WeddingCouple> couples { get; set; }
         static async Task ProcessMockData()
         {
-            var FilePathMarrierUser = @".\MarrierUser.json";
-            var MarrierUsers = JsonConvert.DeserializeObject<List<MarrierUser>>(File.ReadAllText(FilePathMarrierUser));
 
-            foreach (var marrieruser in MarrierUsers)
-                await _context.MerrierUser.AddAsync(marrieruser);
+            var marrierUsers = JsonConvert.DeserializeObject<List<MarrierUser>>(File.ReadAllText(MARRIER_USERS_FILE_PATH_MOCK_DATA));
+            var guests = JsonConvert.DeserializeObject<List<Guest>>(File.ReadAllText(GUESTS_FILE_PATH_MOCK_DATA));
+            var guestUsers = JsonConvert.DeserializeObject<List<GuestUser>>(File.ReadAllText(GUEST_USERS_FILE_PATH_MOCK_DATA));
+
+            // Add 
+            foreach (var marrierUser in marrierUsers)
+            {
+                await _context.MarrierUser.AddAsync(marrierUser);
+                await _userManager.CreateAsync(marrierUser, "Password1!");
+            }
 
             await _context.SaveChangesAsync();
 
-            var FilePathGuest = @".\Guest.json";
-            var Guests = JsonConvert.DeserializeObject<List<Guest>>(File.ReadAllText(FilePathGuest));
 
 
-
-            var FilePathGuestUser = @".\GuestUser.json";
-            var GuestUsers = JsonConvert.DeserializeObject<List<GuestUser>>(File.ReadAllText(FilePathGuestUser));
-
-
-
-
-            for (int i = 0; i < MarrierUsers.Count / 2; i++)
+            for (int i = 0; i < marrierUsers.Count / 2; i++)
             {
                 WeddingCouple weddingCouple = new WeddingCouple()
                 {
                     Merriers = new List<MarrierUser>()
                     {
-                        MarrierUsers[i],
-                        MarrierUsers[i + 500]
+                        marrierUsers[i],
+                        marrierUsers[i + 500]
                     }
                 };
                 await _context.WeddingCouples.AddAsync(weddingCouple);
             }
             await _context.SaveChangesAsync();
 
-            var FilePathWedding = @".\Wedding.json";
-            var Weddings = JsonConvert.DeserializeObject<List<Wedding>>(File.ReadAllText(FilePathWedding));
+            var Weddings = JsonConvert.DeserializeObject<List<Wedding>>(File.ReadAllText(WEDDINGS_FILE_PATH_MOCK_DATA));
 
             var guestIterator = 0;
 
@@ -87,14 +85,14 @@ namespace WeddingApi.Data
 
                 for (int j = 0; j < invitees; j++)
                 {
-                    var guestEntity = Guests.Skip(guestIterator).First();
+                    var guestEntity = guests.Skip(guestIterator).First();
 
                     guestEntity.JoinedWedding = Weddings[i];
                     guestEntity.FriendsOrFamily = (FriendsOrFamily)Rnd.Next(0, 2);
                     guestEntity.Answer = (Status)Rnd.Next(0, 4);
                     guestEntity.Side = (MarrierSide)Rnd.Next(0, 3);
 
-                    if (guestIterator < Guests.Count)
+                    if (guestIterator < guests.Count)
                         guestIterator++;
                     else
                         break;
@@ -102,15 +100,15 @@ namespace WeddingApi.Data
                     await _context.Guests.AddRangeAsync(guestEntity);
                     await _context.SaveChangesAsync();
                 }
-                if (guestIterator >= Guests.Count)
+                if (guestIterator >= guests.Count)
                     break;
             }
 
 
             var guestindex = 0;
-            foreach (var guestuser in GuestUsers)
+            foreach (var guestuser in guestUsers)
             {
-                guestuser.Guest = Guests[guestindex];
+                guestuser.Guest = guests[guestindex];
 
                 await _context.GuestUsers.AddAsync(guestuser);
                 guestindex++;
