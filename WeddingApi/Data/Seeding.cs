@@ -34,7 +34,6 @@ namespace WeddingApi.Data
             await _context.Database.EnsureCreatedAsync();
 
             await ProcessMockData();
-            await EstablishRelations();
         }
 
         public List<WeddingCouple> couples { get; set; }
@@ -118,9 +117,5 @@ namespace WeddingApi.Data
 
         }
 
-        public static async Task EstablishRelations()
-        {
-
-        }
     }
 }
