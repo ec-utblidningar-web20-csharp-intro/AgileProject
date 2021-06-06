@@ -35,8 +35,12 @@ namespace WeddingApi.Utils.SaveTheDateCard
 
         public void CollectEmails()
         {
-            Emails = _wedding.GuestList
-                .Select(g => g.GuestUser.Email);
+            var guestList = _wedding.GuestList;
+            if (guestList != null)
+            {
+                Emails = _wedding.GuestList
+                    .Select(g => g.GuestUser.Email);
+            }
         }
     }
 }

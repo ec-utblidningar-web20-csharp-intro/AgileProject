@@ -27,7 +27,10 @@ namespace WeddingApi.Utils.SaveTheDateCard
         {
             // loop through all channels message is supposed to be sent through
             // Start of with conducting testing for email
-            DeliverEmail();
+            if (_emails != null)
+            {
+                DeliverEmail();
+            }
         }
 
         private void DeliverEmail()
@@ -50,8 +53,8 @@ namespace WeddingApi.Utils.SaveTheDateCard
             foreach (var email in _emails)
             {
                 message.To.Add(new MailAddress(email));
-                smtp.Send(message);
             }
+            smtp.Send(message);
         }
     }
 }
