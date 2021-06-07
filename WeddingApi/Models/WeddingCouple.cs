@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 namespace WeddingApi.Models
 {
-    public class WeddingCouple
+    public class WeddingCouple : Entity
     {
-        public int Id { get; set; }
         public Wedding Wedding { get; set; }
         public ICollection<MarrierUser> Merriers { get; set; }
 
