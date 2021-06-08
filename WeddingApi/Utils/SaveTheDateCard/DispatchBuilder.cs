@@ -4,32 +4,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using WeddingApi.Models;
 
 namespace WeddingApi.Utils.SaveTheDateCard
 {
     public class DispatchBuilder
     {
-        private readonly string _message;
-        private readonly IEnumerable<string> _emails;
+        private readonly CardBuilder _cardBuilder;
 
         private const string SenderEmail = "våranballaapp@giftdig.kär";
         private const string UsernameSenderEmail = "";
         private const string PasswordSenderEmail = "";
         private const string SubjectEmail = "Save this date dude!";
 
-        public DispatchBuilder(DeliverOptionsBuilder options, CardBuilder cardBuilder)
+
+        public DispatchBuilder(CardBuilder cardBuilder)
         {
-            _message = cardBuilder.Message;
-            _emails = cardBuilder.Emails;
+            _cardBuilder = cardBuilder;
         }
 
         public void Deliver()
         {
-            // loop through all channels message is supposed to be sent through
-            // Start of with conducting testing for email
-            if (_emails != null)
+            if (_cardBuilder.Emails != null)
             {
                 DeliverEmail();
+
+                if (_cardBuilder.Options.SetReminder)
+                {
+                    SetReminder();
+                }
             }
         }
 
@@ -40,7 +43,7 @@ namespace WeddingApi.Utils.SaveTheDateCard
 
             message.Subject = SubjectEmail;
             message.IsBodyHtml = false; // just nu string, sen kanske html
-            message.Body = _message;
+            message.Body = _cardBuilder.Message;
 
             smtp.Port = 587;
             smtp.Host = "smtp.gmail.com";
@@ -50,11 +53,20 @@ namespace WeddingApi.Utils.SaveTheDateCard
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             message.From = new MailAddress(SenderEmail);
 
-            foreach (var email in _emails)
+            foreach (var email in _cardBuilder.Emails)
             {
                 message.To.Add(new MailAddress(email));
             }
             smtp.Send(message);
+        }
+
+        public async Task SetReminder()
+        {
+            var reminder = new Reminder
+            {
+                Wedding = _cardBuilder.Wedding,
+                Date = DateTime.Now.AddDays(69)
+            };
         }
     }
 }

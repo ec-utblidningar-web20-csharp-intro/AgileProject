@@ -8,18 +8,17 @@ namespace WeddingApi.Utils.SaveTheDateCard
 {
     public class CardBuilder
     {
-        private readonly CardOptionsBuilder _options;
-        private readonly Models.Wedding _wedding;
-
         public const string MessageTemplate = "{0} and {1} says save the date {2} osv. Respond before {3}. Hadefint";
-
         public string Message { get; private set; }
+        public CardOptionsBuilder Options { get; private set; }
+        public Wedding Wedding { get; private set; }
         public IEnumerable<string> Emails { get; private set; }
 
-        public CardBuilder(CardOptionsBuilder options, Models.Wedding wedding)
+        public CardBuilder(Wedding wedding, Action<CardOptionsBuilder> optionsAction = null)
         {
-            _options = options;
-            _wedding = wedding;
+            Options = new CardOptionsBuilder();
+            optionsAction?.Invoke(Options);
+            Wedding = wedding;
             GenerateMessage();
             CollectEmails();
         }
@@ -27,18 +26,18 @@ namespace WeddingApi.Utils.SaveTheDateCard
         private void GenerateMessage()
         {
             Message = String.Format(MessageTemplate,
-                _wedding.Couple.Merriers.First().FirstName,
-                _wedding.Couple.Merriers.Last().FirstName,
-                _wedding.WeddingDate.ToShortDateString(),
-                _wedding.RespondBeforeDate.ToShortDateString());
+                Wedding.Couple.Merriers.First().FirstName,
+                Wedding.Couple.Merriers.Last().FirstName,
+                Wedding.WeddingDate.ToShortDateString(),
+                Wedding.RespondBeforeDate.ToShortDateString());
         }
 
         public void CollectEmails()
         {
-            var guestList = _wedding.GuestList;
+            var guestList = Wedding.GuestList;
             if (guestList != null)
             {
-                Emails = _wedding.GuestList
+                Emails = Wedding.GuestList
                     .Select(g => g.GuestUser.Email);
             }
         }

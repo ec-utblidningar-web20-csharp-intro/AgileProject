@@ -24,7 +24,7 @@ namespace Testing
                 $"Respond before {seedDate.AddDays(DaysUntilFinalResponse).ToShortDateString()}. Hadefint",
                 testCard.Message);
 
-            new DispatchBuilder(new DeliverOptionsBuilder(), testCard).Deliver();
+            new DispatchBuilder(testCard).Deliver();
 
         }
 
@@ -44,7 +44,10 @@ namespace Testing
                 }
             };
 
-            var card = new CardBuilder(new CardOptionsBuilder(), wedding);
+            var card = new CardBuilder(wedding, options =>
+            {
+                options.SetReminder = true;
+            });
 
             return card;
 
