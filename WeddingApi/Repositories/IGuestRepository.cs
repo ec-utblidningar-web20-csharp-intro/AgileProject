@@ -7,6 +7,7 @@ namespace WeddingApi.Repositories
     public interface IGuestRepository
     {
         IEnumerable<Guest> Get(Wedding wedding, GuestOptionsBuilder options);
+        IEnumerable<Guest> Get(int weddingId, GuestOptionsBuilder options);
         Task<Guest> Get(int id, bool asNoTracking = false);
         Task Create(Guest guest);
         Task Delete(Guest guest);

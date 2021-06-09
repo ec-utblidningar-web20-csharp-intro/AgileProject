@@ -30,6 +30,7 @@ namespace WeddingApi
             services.AddControllersWithViews();
 
             services.AddScoped<IGuestRepository, GuestRepository>();
+            services.AddScoped<IWeddingRepository, WeddingRepository>();
 
             services.AddDbContext<WeddingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WeddingDb")));
 

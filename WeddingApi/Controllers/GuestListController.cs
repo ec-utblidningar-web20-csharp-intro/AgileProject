@@ -1,35 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WeddingApi.Data;
 using WeddingApi.Models;
+using WeddingApi.Repositories;
 
 namespace WeddingApi.Controllers
 {
     public class GuestListController : Controller
     {
         private readonly WeddingDbContext _context;
+        private readonly IGuestRepository _guestRepository;
+        private readonly IWeddingRepository _weddingRepository;
 
-        public GuestListController(WeddingDbContext context)
+        public GuestListController(WeddingDbContext context,
+            IGuestRepository guestRepository,
+            IWeddingRepository weddingRepository)
         {
             _context = context;
+            _guestRepository = guestRepository;
+            _weddingRepository = weddingRepository;
         }
 
         // GET: GuestList
         public async Task<IActionResult> Index(int? id)
         {
-            var GetWeddingId = id;
-            var GetWedding = await _context.Weddings
-                .Where(m => m.Id == GetWeddingId)
-                .FirstOrDefaultAsync();
-
-            return View(await _context.Guests
-                .Where(m => m.JoinedWedding == GetWedding)
-                .ToListAsync());
+            if(id == null)
+            {
+                return View();
+            }
+            return View( _guestRepository.Get((int)id, new GuestOptionsBuilder()));               
         }
 
         // GET: GuestList/Details/5
@@ -40,8 +41,7 @@ namespace WeddingApi.Controllers
                 return NotFound();
             }
 
-            var guest = await _context.Guests
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var guest = await _guestRepository.Get((int)id);
             if (guest == null)
             {
                 return NotFound();
@@ -65,8 +65,7 @@ namespace WeddingApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(guest);
-                await _context.SaveChangesAsync();
+                await _guestRepository.Create(guest);
                 return RedirectToAction(nameof(Index));
             }
             return View(guest);
@@ -80,7 +79,7 @@ namespace WeddingApi.Controllers
                 return NotFound();
             }
 
-            var guest = await _context.Guests.FindAsync(id);
+            var guest = await _guestRepository.Get((int)id);
             if (guest == null)
             {
                 return NotFound();
@@ -93,19 +92,21 @@ namespace WeddingApi.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Gender,Email,Country,City,Allergies,AmountKids,Side,FriendsOrFamily,Answer,HasPlusOne,NeedTransportation,NeedLodging")] Guest guest)
+        public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,Gender,Email,Country,City,Allergies,AmountKids,Side,FriendsOrFamily,Answer,HasPlusOne,NeedTransportation,NeedLodging")] Guest guest)
         {
-            if (id != guest.Id)
+            var GetGuest = await _guestRepository.Get(id);
+            if (id != GetGuest.Id)
             {
                 return NotFound();
             }
 
+            var GetWedding = await _weddingRepository.Get(GetGuest.Id);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(guest);
-                    await _context.SaveChangesAsync();
+                    await _guestRepository.Update(guest);
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,9 +119,9 @@ namespace WeddingApi.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return await Index(GetWedding.Id);
             }
-            return View(guest);
+            return await Index(GetWedding.Id);
         }
 
         // GET: GuestList/Delete/5
@@ -131,8 +132,7 @@ namespace WeddingApi.Controllers
                 return NotFound();
             }
 
-            var guest = await _context.Guests
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var guest = await _guestRepository.Get((int)id, false);
             if (guest == null)
             {
                 return NotFound();
@@ -146,9 +146,8 @@ namespace WeddingApi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var guest = await _context.Guests.FindAsync(id);
-            _context.Guests.Remove(guest);
-            await _context.SaveChangesAsync();
+            var guest = await _guestRepository.Get((int)id, false);
+            await _guestRepository.Delete(guest);
             return RedirectToAction(nameof(Index));
         }
 
