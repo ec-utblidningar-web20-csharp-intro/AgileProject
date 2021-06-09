@@ -12,11 +12,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
 using WeddingApi.Repositories;
+using WeddingApi.Services;
 
 namespace WeddingApi
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +33,10 @@ namespace WeddingApi
 
             services.AddScoped<IGuestRepository, GuestRepository>();
             services.AddScoped<IWeddingRepository, WeddingRepository>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<IUserService, UserService>();
 
             services.AddDbContext<WeddingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WeddingDb")));
 
