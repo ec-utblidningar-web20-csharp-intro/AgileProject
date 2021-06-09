@@ -20,7 +20,7 @@ namespace WeddingApi.Controllers
         {
             _context = context;
         }
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             return View();
         }
