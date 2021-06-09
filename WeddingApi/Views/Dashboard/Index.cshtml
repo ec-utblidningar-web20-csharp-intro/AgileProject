@@ -1,8 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Dashboard";
 }
-
 <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
@@ -59,7 +57,6 @@
             </li>
         </ul>
     </nav>
-
     <!-- Page Content  -->
     <div id="content">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -70,7 +67,6 @@
                 </button>
                 <div class="user-name"><h5>Hi!names</h5></div>
                 <div class="log-out"><a href=""><h6>Log ut</h6></a></div>
-
             </div>
         </nav>
         <div class="container-fluid">
@@ -113,81 +109,8 @@
             </div>
         </div>
         <div class="container-fluid">
-            <div class="card-menu">
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="bg-iconify">
-                                    <span class="iconify logo-menu" data-inline="false" data-icon="icomoon-free:spoon-knife"></span>
-                                </div>
-                                <div>
-                                    <span class="iconify status-menu" data-inline="false" data-icon="carbon:warning" style="color: #EDD65C;"></span>
-                                </div>
-                                <h5 class="card-title">Prepare Your Menu</h5>
-                                <p class="card-text">The sooner you make your menu choices the sooner you can prepare your Guest List.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="bg-iconify">
-                                    <span class="iconify logo-menu" data-inline="false" data-icon="fluent:drink-wine-16-regular"></span>
-                                </div>
-                                <div>
-                                    <span class="iconify status-menu" data-inline="false" data-icon="icons8:checked" style="color: #56EB65;"></span>
-                                </div>
-                                <h5 class="card-title">Drink Order</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="bg-iconify">
-                                    <span class="iconify logo-menu" data-inline="false" data-icon="carbon:bar"></span>
-                                </div>
-                                <div>
-                                    <span class="iconify status-menu" data-inline="false" data-icon="gridicons:time" style="color: #FF4545;"></span>
-                                </div>
-                                <h5 class="card-title">Bar Options</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-                                <a href="#" class="btn  btn-info">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-                                <a href="#" class="btn  btn-info">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-                                <a href="#" class="btn  btn-info">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <partial name="~/Views/Dashboard/Main.cshtml" />
         </div>
     </div>
 </div>
+
