@@ -4,20 +4,33 @@ using WeddingApi.Models;
 using WeddingApi.Utils.SaveTheDateCard;
 using Xunit;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net.Http;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.AspNetCore.Hosting;
+using WeddingApi.Data;
 
 namespace Testing
 {
-    public class Testing_SaveTheDateCards
+    public class TestingSaveTheDateCards : IClassFixture<WebApplicationFactory<WeddingApi.Startup>>
     {
         private static Random rnd = new Random();
         private const int DaysUntilWedding = 350;
         private const int DaysUntilFinalResponse = 250;
 
+        private readonly WebApplicationFactory<WeddingApi.Startup> _webApplicationFactory;
+        public TestingSaveTheDateCards(WebApplicationFactory<WeddingApi.Startup> webApplicationFactory)
+        {
+            _webApplicationFactory = webApplicationFactory;
+        }
+
         [Fact]
         public void ClassConstructed()
         {
             var seedDate = Div.GenerateRandomDate(1950);
-            var testCard = BuildCard(seedDate);
+            var testCard = new SaveTheDateCardBuilder(GetTestWedding(seedDate));
+
+            GetTestWedding(seedDate);
 
             Assert.Equal($"Marrier1 and Marrier2 says save the date " +
                 $"{seedDate.AddDays(DaysUntilWedding).ToShortDateString()} osv. " +
@@ -28,7 +41,20 @@ namespace Testing
 
         }
 
-        public CardBuilder BuildCard(DateTime seedDate)
+        [Fact]
+        public void ReminderSetUp()
+        {
+            var seedDate = Div.GenerateRandomDate(1950);
+            var testCard = new SaveTheDateCardBuilder(GetTestWedding(seedDate), options =>
+            {
+                options.SetReminder = true;
+            });
+
+            // DI context so we can read if reminder was saved to db
+        }
+
+
+        public Wedding GetTestWedding(DateTime seedDate)
         {
             var wedding = new Wedding
             {
@@ -44,12 +70,7 @@ namespace Testing
                 }
             };
 
-            var card = new CardBuilder(wedding, options =>
-            {
-                options.SetReminder = true;
-            });
-
-            return card;
+            return wedding;
 
         }
     }

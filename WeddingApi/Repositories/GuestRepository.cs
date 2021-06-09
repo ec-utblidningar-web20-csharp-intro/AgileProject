@@ -36,17 +36,20 @@ namespace WeddingApi.Repositories
         {
             var guests = _context.Guests.AsNoTracking().AsEnumerable();
 
-            var reflections = options.GetType().GetProperties();
-            foreach (var reflection in reflections)
+            if (options != null)
             {
-                if (reflection.GetValue(options) != null)
+                var reflections = options.GetType().GetProperties();
+                foreach (var reflection in reflections)
                 {
-                    guests = guests.Where(g =>
-                        (dynamic)typeof(Guest).GetProperty(reflection.Name).GetValue(g) ==
-                        (dynamic)reflection.GetValue(options)
-                    );
-                }
-            };
+                    if (reflection.GetValue(options) != null)
+                    {
+                        guests = guests.Where(g =>
+                            (dynamic)typeof(Guest).GetProperty(reflection.Name).GetValue(g) ==
+                            (dynamic)reflection.GetValue(options)
+                        );
+                    }
+                };
+            }
             return guests;
         }
 

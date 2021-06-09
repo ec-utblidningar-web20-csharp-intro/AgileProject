@@ -17,7 +17,7 @@ namespace WeddingApi
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            TestSeedDb(host).Wait();
+            //TestSeedDb(host).Wait();
             host.Run();
         }
 

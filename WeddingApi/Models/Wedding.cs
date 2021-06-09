@@ -10,5 +10,6 @@ namespace WeddingApi.Models
         public int CoupleId { get; set; }
         public WeddingCouple Couple { get; set; }
         public ICollection<Guest> GuestList { get; set; }
+        public SaveTheDateCardReminder Reminder { get; set; }
     }
 }

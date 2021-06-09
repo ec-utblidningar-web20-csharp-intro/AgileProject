@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
 using WeddingApi.Models;
+using WeddingApi.Data;
 
 namespace WeddingApi.Utils.SaveTheDateCard
 {
     public class DispatchBuilder
     {
-        private readonly CardBuilder _cardBuilder;
+        private readonly SaveTheDateCardBuilder _cardBuilder;
+        private readonly WeddingDbContext _context;
 
         private const string SenderEmail = "våranballaapp@giftdig.kär";
         private const string UsernameSenderEmail = "";
@@ -18,22 +20,28 @@ namespace WeddingApi.Utils.SaveTheDateCard
         private const string SubjectEmail = "Save this date dude!";
 
 
-        public DispatchBuilder(CardBuilder cardBuilder)
+        public DispatchBuilder(SaveTheDateCardBuilder cardBuilder, WeddingDbContext context = null)
         {
             _cardBuilder = cardBuilder;
+            _context = context;
         }
 
-        public void Deliver()
+        public async Task Deliver()
         {
-            if (_cardBuilder.Emails != null)
+            if (_cardBuilder?.Options?.SendByEmail ?? true)
             {
                 DeliverEmail();
-
-                if (_cardBuilder.Options.SetReminder)
+                if (_cardBuilder?.Options?.HasReminder ?? false)
                 {
-                    SetReminder();
+                    await SetReminder();
                 }
             }
+
+            if (_cardBuilder?.Options?.SendByText ?? true)
+            {
+                // Implement sending texts
+            }
+
         }
 
         private void DeliverEmail()
@@ -53,20 +61,53 @@ namespace WeddingApi.Utils.SaveTheDateCard
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             message.From = new MailAddress(SenderEmail);
 
-            foreach (var email in _cardBuilder.Emails)
+            var guests = _cardBuilder.Wedding.GuestList;
+
+            foreach (var guest in guests)
             {
-                message.To.Add(new MailAddress(email));
+                message.To.Add(new MailAddress(guest.GuestUser.Email));
             }
-            smtp.Send(message);
+            try
+            {
+                smtp.Send(message);
+            }
+            catch (SmtpFailedRecipientsException exception)
+            {
+                foreach (var e in exception.InnerExceptions)
+                {
+                    var status = e.StatusCode;
+                    if (status == SmtpStatusCode.Ok) continue;
+
+                    if (_context != null)
+                    {
+                        var failedToDeliverInfo = new FailedToDeliver
+                        {
+                            Status = status,
+                            Guest = guests.First(g => g.GuestUser.Email == e.FailedRecipient),
+                            Email = e.FailedRecipient
+                        };
+                        continue;
+                    }
+                    Console.WriteLine("No context supplied, emails that were not delivered won't be logged");
+                }
+            }
         }
 
-        public async Task SetReminder()
+        private async Task SetReminder()
         {
-            var reminder = new Reminder
+            if (_context != null)
             {
-                Wedding = _cardBuilder.Wedding,
-                Date = DateTime.Now.AddDays(69)
-            };
+                var reminder = new SaveTheDateCardReminder
+                {
+                    Wedding = _cardBuilder.Wedding,
+                    Date = DateTime.Now.AddDays(69)
+                };
+
+                await _context.AddAsync(reminder);
+                await _context.SaveChangesAsync();
+                return;
+            }
+            Console.WriteLine("No context supplied, reminder not available");
         }
     }
 }
