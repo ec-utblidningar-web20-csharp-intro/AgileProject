@@ -7,18 +7,19 @@ namespace WeddingApi.Utils.SaveTheDateCard
 {
     public class CardOptionsBuilder
     {
-        public bool SetReminder
+        private bool hasReminder;
+        public bool HasReminder
         {
-            get
-            {
-                return SetReminder;
-            }
+            get { return hasReminder; }
             set
             {
                 ReminderDate = DateTime.Now.AddDays(100);
-                SetReminder = value;
+                hasReminder = value;
             }
         }
+        public bool SendByEmail { get; set; }
+        public bool SendByText { get; set; }
+        public bool SendByRunner { get; set; }
         public DateTime ReminderDate { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace WeddingApi.Data
         public DbSet<Wedding> Weddings { get; set; }
         public DbSet<GuestUser> GuestUsers { get; set; }
         public DbSet<MarrierUser> MarrierUser { get; set; }
+        public DbSet<SaveTheDateCardReminder> SaveTheDateCardReminders { get; set; }
 
     }
 }

@@ -6,21 +6,19 @@ using WeddingApi.Models;
 
 namespace WeddingApi.Utils.SaveTheDateCard
 {
-    public class CardBuilder
+    public class SaveTheDateCardBuilder
     {
         public const string MessageTemplate = "{0} and {1} says save the date {2} osv. Respond before {3}. Hadefint";
         public string Message { get; private set; }
-        public CardOptionsBuilder Options { get; private set; }
+        public CardOptionsBuilder Options { get; set; }
         public Wedding Wedding { get; private set; }
-        public IEnumerable<string> Emails { get; private set; }
 
-        public CardBuilder(Wedding wedding, Action<CardOptionsBuilder> optionsAction = null)
+        public SaveTheDateCardBuilder(Wedding wedding, Action<CardOptionsBuilder> optionsAction = null)
         {
             Options = new CardOptionsBuilder();
             optionsAction?.Invoke(Options);
             Wedding = wedding;
             GenerateMessage();
-            CollectEmails();
         }
 
         private void GenerateMessage()
@@ -32,14 +30,5 @@ namespace WeddingApi.Utils.SaveTheDateCard
                 Wedding.RespondBeforeDate.ToShortDateString());
         }
 
-        public void CollectEmails()
-        {
-            var guestList = Wedding.GuestList;
-            if (guestList != null)
-            {
-                Emails = Wedding.GuestList
-                    .Select(g => g.GuestUser.Email);
-            }
-        }
     }
 }
