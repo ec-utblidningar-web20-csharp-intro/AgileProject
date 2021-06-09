@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Add Groom/bride";
+}
+
+@model WeddingApi.Models.MarrierUser;
+
+@{
+    if (Context.Request.Method == "GET")
+    {
+        <h1>Add groom/bride to your wedding!</h1>
+        <div>
+            <form method="post">
+                @Html.TextBoxFor(m => m.Email)
+            </form>
+        </div>
+    }
+    else
+    {
+        <h1>Successfully added @Model.Email to your wedding!</h1>
+        <a asp-controller="Home">Continue</a>
+    }
+}
