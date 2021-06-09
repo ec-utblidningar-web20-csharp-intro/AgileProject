@@ -35,7 +35,7 @@ namespace WeddingApi.Controllers
 
             //var MarrierUser = await _context.MarrierUser.Where(u => u.Email == UserEmail).FirstOrDefaultAsync();
 
-            //var weddingCouple = await _context.WeddingCouples.Where(w => w.Merriers.Contains(MarrierUser)).FirstOrDefaultAsync();
+            //var weddingCouple = await _context.WeddingCouples.Include(w => w.Merriers).Where(w => w.Merriers.Contains(MarrierUser)).FirstOrDefaultAsync();
 
             //weddingCouple.Merriers.Add(marrierToBeAdded);
             //_context.WeddingCouples.Update(weddingCouple);
