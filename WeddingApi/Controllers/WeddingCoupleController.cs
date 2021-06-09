@@ -26,32 +26,22 @@ namespace WeddingApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(string email)
+        public async Task<ActionResult> Index(MarrierUser marrierUser)
         {
-            MarrierUser marrierToBeAdded = new MarrierUser()
-            {
-                Email = email
-            };
 
-            await _context.MarrierUser.AddAsync(marrierToBeAdded);
+            await _context.MarrierUser.AddAsync(marrierUser);
 
-            string UserEmail = User.FindFirst(ClaimTypes.Email).Value;
+            //string UserEmail = User.FindFirst(ClaimTypes.Email).Value;
 
-            var MarrierUser = await _context.MarrierUser.Where(u => u.Email == UserEmail).FirstOrDefaultAsync();
+            //var MarrierUser = await _context.MarrierUser.Where(u => u.Email == UserEmail).FirstOrDefaultAsync();
 
-            var weddingCouple = await _context.WeddingCouples.Where(w => w.Merriers.Contains(MarrierUser)).FirstOrDefaultAsync();
+            //var weddingCouple = await _context.WeddingCouples.Where(w => w.Merriers.Contains(MarrierUser)).FirstOrDefaultAsync();
 
-            weddingCouple.Merriers.Add(marrierToBeAdded);
-            _context.WeddingCouples.Update(weddingCouple);
+            //weddingCouple.Merriers.Add(marrierToBeAdded);
+            //_context.WeddingCouples.Update(weddingCouple);
             
-            if(await _context.SaveChangesAsync() == 1)
-            return Created(marrierToBeAdded.Email);
-            return View();
-        }
-
-        public ActionResult Created(string email)
-        {
-            return View(email);
+            //if(await _context.SaveChangesAsync() == 1)
+            return View(marrierUser);
         }
         
     }
