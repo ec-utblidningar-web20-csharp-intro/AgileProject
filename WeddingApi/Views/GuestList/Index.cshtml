@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WeddingApi.Models.Guest>
+
+@{
+    ViewData["Title"] = "GuestList";
+}
+<svg viewBox="0 0 1440 320" fill="none">
+    <path d="M0 142.222L21.8 118.556C43.6 94.4444 87 47.7778 131 47.4444C174.5 47.7778 218 94.4445 262 124.444C305.5 154.444 349 165.556 393 154.111C436.4 142.222 480 106.667 524 124.444C567.3 142.222 611 213.333 655 207.444C698.2 201.111 742 118.889 785 83C829.1 47.7778 873 58.8889 916 77C960 94.4445 1004 118.889 1047 165.889C1090.9 213.333 1135 284.444 1178 302.222C1221.8 320 1265 284.444 1309 278.556C1352.7 272.222 1396 296.667 1418 308.111L1440 320V0H1418.2C1396.4 0 1353 0 1309 0C1265.5 0 1222 0 1178 0C1134.5 0 1091 0 1047 0C1003.6 0 960 0 916 0C872.7 0 829 0 785 0C741.8 0 698 0 655 0C610.9 0 567 0 524 0C480 0 436 0 393 0C349.1 0 305 0 262 0C218.2 0 175 0 131 0C87.3 0 44 0 22 0H0V142.222Z" fill="#F830E4" />
+</svg>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                <a class="btn rounded bg-primary" asp-action="Invite" asp-route-id="@item.Id">Invite</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

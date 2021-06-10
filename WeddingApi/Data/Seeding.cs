@@ -22,6 +22,8 @@ namespace WeddingApi.Data
         private static WeddingDbContext _context { get; set; }
         private static UserManager<IdentityUser> _userManager { get; set; }
 
+        private static SignInManager<IdentityUser> _signInManager { get; set; }
+
         public static Random Rnd = new Random();
 
 
@@ -29,98 +31,71 @@ namespace WeddingApi.Data
         {
             _context = services.GetRequiredService<WeddingDbContext>();
             _userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            _signInManager = services.GetRequiredService<SignInManager<IdentityUser>>();
 
-            await _context.Database.EnsureDeletedAsync();
-            await _context.Database.EnsureCreatedAsync();
+            //await _context.Database.EnsureDeletedAsync();
+            //await _context.Database.EnsureCreatedAsync();
 
             await ProcessMockData();
-            await EstablishRelations();
         }
 
-        public List<WeddingCouple> couples { get; set; }
         static async Task ProcessMockData()
         {
 
             var marrierUsers = JsonConvert.DeserializeObject<List<MarrierUser>>(File.ReadAllText(MARRIER_USERS_FILE_PATH_MOCK_DATA));
             var guests = JsonConvert.DeserializeObject<List<Guest>>(File.ReadAllText(GUESTS_FILE_PATH_MOCK_DATA));
-            var guestUsers = JsonConvert.DeserializeObject<List<GuestUser>>(File.ReadAllText(GUEST_USERS_FILE_PATH_MOCK_DATA));
-
-            // Add 
-            foreach (var marrierUser in marrierUsers)
-            {
-                await _context.MarrierUser.AddAsync(marrierUser);
-                await _userManager.CreateAsync(marrierUser, "Password1!");
-            }
-
-            await _context.SaveChangesAsync();
-
-
-
-            for (int i = 0; i < marrierUsers.Count / 2; i++)
-            {
-                WeddingCouple weddingCouple = new WeddingCouple()
-                {
-                    Merriers = new List<MarrierUser>()
-                    {
-                        marrierUsers[i],
-                        marrierUsers[i + 500]
-                    }
-                };
-                await _context.WeddingCouples.AddAsync(weddingCouple);
-            }
-            await _context.SaveChangesAsync();
-
-            var Weddings = JsonConvert.DeserializeObject<List<Wedding>>(File.ReadAllText(WEDDINGS_FILE_PATH_MOCK_DATA));
+            //var guestUsers = JsonConvert.DeserializeObject<List<GuestUser>>(File.ReadAllText(GUEST_USERS_FILE_PATH_MOCK_DATA));
+            var weddings = JsonConvert.DeserializeObject<List<Wedding>>(File.ReadAllText(WEDDINGS_FILE_PATH_MOCK_DATA));
 
             var guestIterator = 0;
-
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < weddings.Count; i++)
             {
-                Weddings[i].Couple = _context.WeddingCouples.Find(i + 1);
-
-                await _context.Weddings.AddAsync(Weddings[i]);
+                var coupleEntity = await _context.AddAsync(new WeddingCouple
+                {
+                    Merriers = new List<MarrierUser>
+                        {
+                            marrierUsers[i + (i*2)],
+                            marrierUsers[i + (i*2)+1]
+                        },
+                });
                 await _context.SaveChangesAsync();
+                weddings[i].Couple = coupleEntity.Entity;
+
+                var weddingEntity = await _context.AddAsync(weddings[i]);
 
                 var invitees = Rnd.Next(2, 30);
-
+                weddings[i].GuestList = new List<Guest>();
                 for (int j = 0; j < invitees; j++)
                 {
-                    var guestEntity = guests.Skip(guestIterator).First();
+                    var guest = guests.Skip(guestIterator).First();
 
-                    guestEntity.JoinedWedding = Weddings[i];
-                    guestEntity.FriendsOrFamily = (FriendsOrFamily)Rnd.Next(0, 2);
-                    guestEntity.Answer = (Status)Rnd.Next(0, 4);
-                    guestEntity.Side = (MarrierSide)Rnd.Next(0, 3);
-
-                    if (guestIterator < guests.Count)
-                        guestIterator++;
-                    else
-                        break;
-
-                    await _context.Guests.AddRangeAsync(guestEntity);
+                    var guestEntity = await _context.AddAsync(guest);
+                    guestEntity.Entity.JoinedWedding = weddingEntity.Entity;
+                    guestEntity.Entity.FriendsOrFamily = (FriendsOrFamily)Rnd.Next(0, 2);
+                    guestEntity.Entity.Answer = (Status)Rnd.Next(0, 4);
+                    guestEntity.Entity.Side = (MarrierSide)Rnd.Next(0, 3);
                     await _context.SaveChangesAsync();
+
+                    weddings[i].GuestList.Add(guestEntity.Entity);
+
+                    var guestUser = new GuestUser
+                    {
+                        LoginCode = new Guid().ToString(),
+                        Guest = guestEntity.Entity
+                    };
+                    await _context.AddAsync(guestUser);
+                    await _userManager.CreateAsync(guestUser, "Password1!");
+                    await _context.SaveChangesAsync();
+
+                    guestIterator++;
+                    if (guestIterator == guests.Count)
+                    {
+                        return;
+                    }
                 }
-                if (guestIterator >= guests.Count)
-                    break;
             }
-
-
-            var guestindex = 0;
-            foreach (var guestuser in guestUsers)
-            {
-                guestuser.Guest = guests[guestindex];
-
-                await _context.GuestUsers.AddAsync(guestuser);
-                guestindex++;
-            }
-            await _context.SaveChangesAsync();
-
 
         }
 
-        public static async Task EstablishRelations()
-        {
-
-        }
     }
 }

@@ -30,11 +30,35 @@ namespace WeddingApi.Repositories
             return await _context.Guests
                 .FindAsync(id);
         }
-
         // Get collection of guests, param guestoptionsbuilder for sorting
         public IEnumerable<Guest> Get(Wedding wedding, GuestOptionsBuilder options)
         {
-            var guests = _context.Guests.AsNoTracking().AsEnumerable();
+            var guests = _context.Guests.AsNoTracking().Where(w => w.JoinedWedding == wedding).AsEnumerable();
+
+            if (options != null)
+            {
+                var reflections = options.GetType().GetProperties();
+                foreach (var reflection in reflections)
+                {
+                    if (reflection.GetValue(options) != null)
+                    {
+                        guests = guests.Where(g =>
+                            (dynamic)typeof(Guest).GetProperty(reflection.Name).GetValue(g) ==
+                            (dynamic)reflection.GetValue(options)
+                        );
+                    }
+                };
+            }
+            return guests;
+        }
+
+        public IEnumerable<Guest> Get(int weddingId, GuestOptionsBuilder options)
+        {
+            var guests = _context.Guests
+                .Include(g => g.JoinedWedding)
+                .AsNoTracking()
+                .Where(g => g.JoinedWedding.Id == weddingId)
+                .AsEnumerable();
 
             var reflections = options.GetType().GetProperties();
             foreach (var reflection in reflections)
@@ -49,7 +73,6 @@ namespace WeddingApi.Repositories
             };
             return guests;
         }
-
         // Save guest 
         public async Task Create(Guest guest)
         {
@@ -95,6 +118,8 @@ namespace WeddingApi.Repositories
             _context.Update(guest);
             await _context.SaveChangesAsync();
         }
+
+        
     }
 
     public class GuestOptionsBuilder
