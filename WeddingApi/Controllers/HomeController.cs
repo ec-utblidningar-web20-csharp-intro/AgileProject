@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using WeddingApi.Data;
 using WeddingApi.Models;
 using WeddingApi.Repositories;
 using WeddingApi.Services;
-using WeddingApi.Utils.SaveTheDateCard;
+
 
 namespace WeddingApi.Controllers
 {
@@ -33,19 +34,19 @@ namespace WeddingApi.Controllers
         public IActionResult Index()
         {
 
-            var userId = await _userService.GetCurrentUser();
+            //var userId = await _userService.GetCurrentUser();
 
-            var wedding = await _context.Weddings
-                .Include(w => w.Couple)
-                    .ThenInclude(c => c.Merriers)
-                .Include(w => w.GuestList)
-                    .ThenInclude(gl => gl.GuestUser)
-                .FirstOrDefaultAsync();
-            var testCard = new SaveTheDateCardBuilder(wedding, options =>
-            {
-                HasPlusOne = true
-            };
-            var test = _guestRepo.Get(new Wedding(), options);
+            //var wedding = await _context.Weddings
+            //    .Include(w => w.Couple)
+            //        .ThenInclude(c => c.Merriers)
+            //    .Include(w => w.GuestList)
+            //        .ThenInclude(gl => gl.GuestUser)
+            //    .FirstOrDefaultAsync();
+            //var testCard = new SaveTheDateCardBuilder(wedding, options =>
+            //{
+            //    HasPlusOne = true
+            //};
+            //var test = _guestRepo.Get(new Wedding(), options);
             return View();
         }
 

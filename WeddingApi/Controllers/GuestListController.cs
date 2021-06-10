@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using WeddingApi.Data;
 using WeddingApi.Models;
 using WeddingApi.Repositories;
+using WeddingApi.Services;
 
 namespace WeddingApi.Controllers
 {
@@ -13,14 +15,23 @@ namespace WeddingApi.Controllers
         private readonly WeddingDbContext _context;
         private readonly IGuestRepository _guestRepository;
         private readonly IWeddingRepository _weddingRepository;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IUserService _userService;
 
         public GuestListController(WeddingDbContext context,
             IGuestRepository guestRepository,
-            IWeddingRepository weddingRepository)
+            IWeddingRepository weddingRepository,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IUserService userService)
         {
             _context = context;
             _guestRepository = guestRepository;
             _weddingRepository = weddingRepository;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _userService = userService;
         }
 
         // GET: GuestList
@@ -95,12 +106,20 @@ namespace WeddingApi.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,Gender,Email,Country,City,Allergies,AmountKids,Side,FriendsOrFamily,Answer,HasPlusOne,NeedTransportation,NeedLodging")] Guest guest)
         {
             var GetGuest = await _guestRepository.Get(id);
+            
+
+            //await _signInManager.SignInAsync(await _context.MarrierUser.FirstOrDefaultAsync(), false);
+            var user = await _userService.GetCurrentUser();
+
             if (id != GetGuest.Id)
             {
                 return NotFound();
             }
+            var getcouple = await _context.WeddingCouples
+                .Where(wc => wc.Merriers == user)
+                .FirstOrDefaultAsync();
 
-            var GetWedding = await _weddingRepository.Get(GetGuest.Id);
+            var GetWedding = await _weddingRepository.Get(getcouple.Id);
             if (ModelState.IsValid)
             {
                 try
