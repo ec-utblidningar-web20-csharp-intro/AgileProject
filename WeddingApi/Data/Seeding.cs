@@ -22,6 +22,8 @@ namespace WeddingApi.Data
         private static WeddingDbContext _context { get; set; }
         private static UserManager<IdentityUser> _userManager { get; set; }
 
+        private static SignInManager<IdentityUser> _signInManager { get; set; }
+
         public static Random Rnd = new Random();
 
 
@@ -29,9 +31,10 @@ namespace WeddingApi.Data
         {
             _context = services.GetRequiredService<WeddingDbContext>();
             _userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            _signInManager = services.GetRequiredService<SignInManager<IdentityUser>>();
 
-            await _context.Database.EnsureDeletedAsync();
-            await _context.Database.EnsureCreatedAsync();
+            //await _context.Database.EnsureDeletedAsync();
+            //await _context.Database.EnsureCreatedAsync();
 
             await ProcessMockData();
         }

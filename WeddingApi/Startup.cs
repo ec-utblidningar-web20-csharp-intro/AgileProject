@@ -32,6 +32,12 @@ namespace WeddingApi
             services.AddControllersWithViews();
 
             services.AddScoped<IGuestRepository, GuestRepository>();
+            services.AddScoped<IWeddingRepository, WeddingRepository>();
+            services.AddScoped<IMarrierUserRepository, MarrierUserRepository>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<IUserService, UserService>();
 
             services.AddHttpContextAccessor();
 
